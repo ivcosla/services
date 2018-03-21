@@ -1,0 +1,3 @@
+[submodule "skycoin-crypto"]
+	path = skycoin-crypto
+	url = https://github.com/mpsido/skycoin-crypto.git
