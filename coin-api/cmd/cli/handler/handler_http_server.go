@@ -1,13 +1,12 @@
 package handler
 
 import (
-	"context"
 
 	"log"
-
-	"github.com/BurntSushi/toml"
+	"os"
 	"github.com/labstack/echo"
 	"github.com/urfave/cli"
+	"github.com/spf13/viper"
 
 	"github.com/skycoin/services/coin-api/internal/server"
 )
@@ -26,12 +25,7 @@ func NewServerHTTP() *ServerHTTP {
 func (s ServerHTTP) Start(c *cli.Context) error {
 	cfgFile := c.Args().First()
 
-	var config = &server.Config{}
-	_, err := toml.DecodeFile(cfgFile, config)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+	config := readConfig(cfgFile)
 
 	srv, err := server.Start(config)
 	if err != nil {
@@ -42,11 +36,26 @@ func (s ServerHTTP) Start(c *cli.Context) error {
 }
 
 // Stop stops the http server
-func (s ServerHTTP) Stop(c *cli.Context) error {
-	if s.server != nil {
-		ctx := context.Background()
-		return s.server.Shutdown(ctx)
-	}
+// func (s ServerHTTP) Stop(c *cli.Context) error {
+	// if s.server != nil {
+		// ctx := context.Background()
+		// return s.server.Shutdown(ctx)
+	// }
 	// silently return nil if serves has not been launched
-	return nil
+	// return nil
+// }
+
+func readConfig(configPath string) *viper.Viper {
+	f, err := os.Open(configPath)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cfg := viper.New()
+	cfg.SetConfigType("toml")
+	cfg.AddConfigPath(".")
+	cfg.ReadConfig(f)
+	
+	return cfg
 }

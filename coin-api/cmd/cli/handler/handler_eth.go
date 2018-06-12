@@ -6,24 +6,16 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
-	"github.com/"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 )
 
 const (
-	apiVersion = "api/v1"
-	btc = "btc"
-	clientTimeout = time.Second * 10
-	minBtcAddrLen = 26
-	maxBtcAddrLen = 35
+	minEthAddrLen = 26
+	maxEthAddrLen = 35
 )
 
-var (
-	client *http.Client
-)
 
 func init() {
 	client = &http.Client{
@@ -31,17 +23,17 @@ func init() {
 	}
 }
 
-// BTC is a cli bitcoin handler
-type BTC struct{}
+// ETH is a cli bitcoin handler
+type ETH struct{}
 
-// NewBTC returns new bitcoin handler instance
-func NewBTC() *BTC {
-	return &BTC{}
+// NewETH returns new bitcoin handler instance
+func NewETH() *ETH {
+	return &ETH{}
 }
 
 // GenerateKeyPair generates keypair for bitcoin
-func (b *BTC) GenerateKeyPair(c *cli.Context) error {
-	req, err := http.NewRequest(http.MethodPost, apiVersion + btc + "/keys", nil)
+func (e *ETH) GenerateKeyPair(c *cli.Context) error {
+	req, err := http.NewRequest(http.MethodPost, "/keys", nil)
 
 	if err != nil {
 		return err
@@ -52,14 +44,13 @@ func (b *BTC) GenerateKeyPair(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	
-	json.NewDecoder(resp.Body).Decode()
+
 	log.Printf("Key %s created\n", resp)
 	return nil
 }
 
 // GenerateAddress generates addresses and keypairs for bitcoin
-func (b *BTC) GenerateAddress(c *cli.Context) error {
+func (e *ETH) GenerateAddress(c *cli.Context) error {
 	publicKey := c.Args().Get(1)
 
 	params := map[string]interface{}{
@@ -92,12 +83,12 @@ func (b *BTC) GenerateAddress(c *cli.Context) error {
 }
 
 // CheckBalance checks bitcoin balance
-func (b *BTC) CheckBalance(c *cli.Context) error {
+func (e *ETH) CheckBalance(c *cli.Context) error {
 	addr := c.Args().First()
 
 	if len(addr) > 35 || len(addr) < 26 {
 		err := errors.New(fmt.Sprintf("Address lenght must be between %d and %d",
-			minBtcAddrLen, maxBtcAddrLen))
+			minEthAddrLen, maxEthAddrLen))
 		return err
 	}
 
