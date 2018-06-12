@@ -43,7 +43,7 @@ func TestGenerateKeyPair(t *testing.T) {
 	type response struct {
 		Status string          `json:"status"`
 		Code   int             `json:"code"`
-		Result keyPairResponse `json:"result"`
+		Result KeyPairResponse `json:"result"`
 	}
 
 	var resp response
@@ -85,7 +85,7 @@ func TestGenerateAddress(t *testing.T) {
 	type response struct {
 		Status string          `json:"status"`
 		Code   int             `json:"code"`
-		Result addressResponse `json:"result"`
+		Result AddressResponse `json:"result"`
 	}
 
 	var resp response

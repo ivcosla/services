@@ -41,6 +41,12 @@ func main() {
 						ArgsUsage: "<address>",
 						Action:    hBTC.CheckBalance,
 					},
+					cli.Command{
+						Name:      "checktxstatus",
+						Usage:     "Check BTC transaction status",
+						ArgsUsage: "<transaction id>",
+						Action:    hBTC.CheckTransaction	,
+					},
 				},
 				Before: func(c *cli.Context) error {
 					endpoint = "btc"
@@ -82,11 +88,11 @@ func main() {
 						ArgsUsage: "<config_file>",
 						Action:    httpServer.Start,
 					},
-					cli.Command{
-						Name:   "stop",
-						Usage:  "Stop HTTP Server",
-						Action: httpServer.Stop,
-					},
+					// cli.Command{
+						// Name:   "stop",
+						// Usage:  "Stop HTTP Server",
+						// Action: httpServer.Stop,
+					// },
 				},
 			},
 		},

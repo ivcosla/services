@@ -57,7 +57,7 @@ func (h *handlerMulti) generateKeys(e echo.Context) error {
 }
 
 func (h *handlerMulti) generateSeed(ctx echo.Context) error {
-	var req addressRequest
+	var req AddressRequest
 
 	if err := ctx.Bind(&req); err != nil {
 		return handleError(ctx, err)
