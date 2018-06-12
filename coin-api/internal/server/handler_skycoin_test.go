@@ -49,7 +49,7 @@ func TestHandlerMulti(t *testing.T) {
 		}
 
 		t.Run("TestGenerateAddress", func(t *testing.T) {
-			r := addressRequest{
+			r := AddressRequest{
 				rsp.Result.Public,
 			}
 

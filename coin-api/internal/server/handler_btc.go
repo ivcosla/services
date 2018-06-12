@@ -13,16 +13,16 @@ import (
 	"github.com/skycoin/services/coin-api/internal/btc"
 )
 
-type keyPairResponse struct {
+type KeyPairResponse struct {
 	Public  string `json:"public"`
 	Private []byte `json:"private"`
 }
 
-type addressRequest struct {
+type AddressRequest struct {
 	PublicKey string `json:"key"`
 }
 
-type addressResponse struct {
+type AddressResponse struct {
 	Address string `json:"address"`
 }
 
@@ -67,11 +67,11 @@ func (h *handlerBTC) generateKeyPair(ctx echo.Context) error {
 	resp := struct {
 		Status string          `json:"status"`
 		Code   int             `json:"code"`
-		Result keyPairResponse `json:"result"`
+		Result KeyPairResponse `json:"result"`
 	}{
 		"Ok",
 		http.StatusOK,
-		keyPairResponse{
+		KeyPairResponse{
 			Public:  public.Hex(),
 			Private: private[:],
 		},
@@ -83,7 +83,7 @@ func (h *handlerBTC) generateKeyPair(ctx echo.Context) error {
 }
 
 func (h *handlerBTC) generateAddress(ctx echo.Context) error {
-	var req addressRequest
+	var req AddressRequest
 
 	if err := ctx.Bind(&req); err != nil {
 		return handleError(ctx, err)
@@ -108,11 +108,11 @@ func (h *handlerBTC) generateAddress(ctx echo.Context) error {
 	resp := struct {
 		Status string          `json:"status"`
 		Code   int             `json:"code"`
-		Result addressResponse `json:"result"`
+		Result AddressResponse `json:"result"`
 	}{
 		Status: "",
 		Code:   http.StatusOK,
-		Result: addressResponse{
+		Result: AddressResponse{
 			Address: address,
 		},
 	}

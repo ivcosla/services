@@ -23,7 +23,7 @@ type Status struct {
 }
 
 // Start starts the server
-func Start(config *viper.Viper) error {
+func Start(config *viper.Viper) (*echo.Echo, error) {
 	e := echo.New()
 	e.Use(middleware.GzipWithConfig(middleware.DefaultGzipConfig))
 	e.Use(middleware.RecoverWithConfig(middleware.DefaultRecoverConfig))
@@ -97,7 +97,7 @@ func Start(config *viper.Viper) error {
 	listener, err := net.Listen("tcp", config.Sub("server").GetString("ListenStr"))
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	e.Listener = listener
@@ -116,7 +116,7 @@ func Start(config *viper.Viper) error {
 	// Start configured server with custom listener
 	err = e.StartServer(server)
 
-	return err
+	return e, err
 }
 
 // Handle SIGINT

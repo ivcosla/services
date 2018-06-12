@@ -182,7 +182,7 @@ func TestEthGetTransactionStatus(t *testing.T) {
 	nonce := uint64(777)
 	addr := common.HexToAddress(rawAddr)
 	amount := big.NewInt(100)
-	gasLimit := big.NewInt(2)
+	gasLimit := uint64(2)
 	gasPrice := big.NewInt(1)
 	data := []byte("hello")
 

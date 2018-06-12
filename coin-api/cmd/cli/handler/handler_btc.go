@@ -9,13 +9,15 @@ import (
 	"time"
 
 	"github.com/skycoin/services/coin-api/internal/server"
+	"github.com/skycoin/services/coin-api/internal/btc"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 )
 
 const (
 	apiVersion = "api/v1"
-	btc = "btc"
+	serverAddress = ":9090"
+	btcEndpoint = "btc"
 	clientTimeout = time.Second * 10
 	minBtcAddrLen = 26
 	maxBtcAddrLen = 35
@@ -41,7 +43,7 @@ func NewBTC() *BTC {
 
 // GenerateKeyPair generates keypair for bitcoin
 func (b *BTC) GenerateKeyPair(c *cli.Context) error {
-	req, err := http.NewRequest(http.MethodPost, apiVersion + btc + "/keys", nil)
+	req, err := http.NewRequest(http.MethodPost, serverAddress + apiVersion + btcEndpoint + "/keys", nil)
 
 	if err != nil {
 		return err
@@ -65,7 +67,7 @@ func (b *BTC) GenerateAddress(c *cli.Context) error {
 	publicKey := c.Args().Get(1)
 
 	params := map[string]interface{}{
-		"publicKey": publicKey,
+		"key": publicKey,
 	}
 
 	data, err := json.Marshal(params)
@@ -76,7 +78,7 @@ func (b *BTC) GenerateAddress(c *cli.Context) error {
 
 	body := bytes.NewReader(data)
 
-	req, err := http.NewRequest(http.MethodPost, "/address", body)
+	req, err := http.NewRequest(http.MethodPost, serverAddress + apiVersion + btcEndpoint + "/address", body)
 
 	if err != nil {
 		return err
@@ -100,13 +102,13 @@ func (b *BTC) GenerateAddress(c *cli.Context) error {
 func (b *BTC) CheckBalance(c *cli.Context) error {
 	addr := c.Args().First()
 
-	if len(addr) > 35 || len(addr) < 26 {
-		err := errors.New(fmt.Sprintf("Address lenght must be between %d and %d",
+	if len(addr) > maxBtcAddrLen || len(addr) < minBtcAddrLen {
+		err := errors.New(fmt.Sprintf("Address length must be between %d and %d",
 			minBtcAddrLen, maxBtcAddrLen))
 		return err
 	}
-
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/address/%s", addr), nil)
+ 
+	req, err := http.NewRequest(http.MethodGet, serverAddress + apiVersion + btcEndpoint + fmt.Sprintf("/address/%s", addr), nil)
 
 	if err != nil {
 		return err
@@ -118,9 +120,31 @@ func (b *BTC) CheckBalance(c *cli.Context) error {
 		return err
 	}
 
-	addressResponse := &server.AddressResponse{}
-	json.NewDecoder(resp.Body).Decode(addressResponse)
+	balanceResponse := &btc.BalanceResponse{}
+	json.NewDecoder(resp.Body).Decode(balanceResponse)
 
-	log.Printf("Check balance success %s\n", resp)
+	log.Printf("Check balance success %+v\n", balanceResponse)
+	return nil
+}
+
+func (b *BTC) CheckTransaction(c *cli.Context) error {
+	txId := c.Args().First()
+
+	req, err := http.NewRequest(http.MethodGet, serverAddress + apiVersion + btcEndpoint + fmt.Sprintf("/transaction/%s", txId), nil)
+
+	if err != nil {
+		return err
+	}
+
+	resp, err := client.Do(req)
+
+	if err != nil {
+		return err
+	}
+
+	txStatusResponse := &btc.TxStatus{}
+	json.NewDecoder(resp.Body).Decode(txStatusResponse)
+
+	log.Printf("Check balance success %+v\n", txStatusResponse)
 	return nil
 }
