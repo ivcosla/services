@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  name = "github.com/BurntSushi/toml"
-  packages = ["."]
-  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
-  version = "v0.3.0"
-
-[[projects]]
   name = "github.com/boltdb/bolt"
   packages = ["."]
   revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
@@ -388,6 +382,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "37e5dedfc6d3545ea0557d40bd7ddab1d318f63e3197074b3dda9f6f2ca71312"
+  inputs-digest = "312638eee259db6dc858b3e7927a5e64c8f793dadf366e7bda999be8f1e13120"
   solver-name = "gps-cdcl"
   solver-version = 1

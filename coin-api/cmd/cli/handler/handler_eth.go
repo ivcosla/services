@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	minEthAddrLen = 26
-	maxEthAddrLen = 35
+	ETH_ADDRESS_LENGTH = 40
+	
 )
 
 
@@ -23,15 +23,15 @@ func init() {
 	}
 }
 
-// ETH is a cli bitcoin handler
+// ETH is a cli ethereum handler
 type ETH struct{}
 
-// NewETH returns new bitcoin handler instance
+// NewETH returns new ethereum handler instance
 func NewETH() *ETH {
 	return &ETH{}
 }
 
-// GenerateKeyPair generates keypair for bitcoin
+// GenerateKeyPair generates keypair for ethereum
 func (e *ETH) GenerateKeyPair(c *cli.Context) error {
 	req, err := http.NewRequest(http.MethodPost, "/keys", nil)
 
@@ -49,7 +49,7 @@ func (e *ETH) GenerateKeyPair(c *cli.Context) error {
 	return nil
 }
 
-// GenerateAddress generates addresses and keypairs for bitcoin
+// GenerateAddress generates addresses and keypairs for ethereum
 func (e *ETH) GenerateAddress(c *cli.Context) error {
 	publicKey := c.Args().Get(1)
 
@@ -82,13 +82,13 @@ func (e *ETH) GenerateAddress(c *cli.Context) error {
 	return nil
 }
 
-// CheckBalance checks bitcoin balance
+// CheckBalance checks ethereum balance
 func (e *ETH) CheckBalance(c *cli.Context) error {
 	addr := c.Args().First()
 
-	if len(addr) > 35 || len(addr) < 26 {
-		err := errors.New(fmt.Sprintf("Address lenght must be between %d and %d",
-			minEthAddrLen, maxEthAddrLen))
+	if len(addr) != ETH_ADDRESS_LENGTH { 
+		err := errors.New(fmt.Sprintf("Address lenght must be %d",
+			ETH_ADDRESS_LENGTH))
 		return err
 	}
 
