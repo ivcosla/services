@@ -34,10 +34,21 @@ func Start(config *viper.Viper) (*echo.Echo, error) {
 	hMulti := newHandlerMulti(config.Sub("skycoin").GetString("Host"),
 		config.Sub("skycoin").GetInt("Port"))
 
-	hBTC, err := newHandlerBTC(
-		config.Sub("bitcoin").GetString("BlockExplorer"),
+	
+	log.Printf("Create handler with for BTC with watcher %s and explorer %s",
+		config.Sub("bitcoin").GetString("WatcherUrl"),
+		config.Sub("bitcoin").GetString("BlockExplorer"))
+	hBTC, err := newHandlerBTC(config.Sub("bitcoin").GetString("BlockExplorer"),
 		config.Sub("bitcoin").GetString("WatcherUrl"))
 
+	/* In progress
+	log.Printf("Create handler with for ETH with watcher %s and explorer %s",
+			config.Sub("ethereum").GetString("WatcherUrl"),
+			config.Sub("ethereum").GetString("BlockExplorer"))
+	hBTC, err := newHandlerETH(config.Sub("ethereum").GetString("BlockExplorer"),
+			config.Sub("ethereum").GetString("WatcherUrl"))
+	*/
+		
 	generalHandler := &GeneralHandler{}
 
 	apiGroupV1 := e.Group("/api/v1")
@@ -54,7 +65,7 @@ func Start(config *viper.Viper) (*echo.Echo, error) {
 	// generate keys
 	skyGroup.POST("/keys", hMulti.generateKeys)
 	// generate address
-	skyGroup.POST("/address", hMulti.generateSeed)
+	skyGroup.POST("/address", hMulti.generateSeed) 
 	// check the balance (and get unspent outputs) for an address
 	skyGroup.GET("/address/:address", hMulti.checkBalance)
 	// sign a transaction

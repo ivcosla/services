@@ -2,9 +2,17 @@
 BlockExplorer="https://api.blockcypher.com"
 WatcherUrl="http://localhost:8081"
 
+#[ethereum]
+#BlockExplorer="https://api.blockcypher.com"
+#WatcherUrl="http://localhost:8082"
+
 [skycoin]
 Host="127.0.0.1"
 Port="6420"
+
+#needs to be changed to eth
+#BlockExplorer="https://api.blockcypher.com"
+#WatcherUrl="http://localhost:8081"
 
 [server]
 ListenStr="0.0.0.0:9090"
