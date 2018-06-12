@@ -18,7 +18,6 @@ func main() {
 	hBTC := handler.NewBTC()
 	hMulti := handler.NewMulti()
 	httpServer := handler.NewServerHTTP()
-
 	cliapp := cli.App{
 		Commands: []cli.Command{
 			{

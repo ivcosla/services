@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	apiVersion = "api/v1"
-	serverAddress = ":9090"
+	apiVersion = "api/v1/"
+	serverAddress = "http://localhost:9090/"
 	btcEndpoint = "btc"
 	clientTimeout = time.Second * 10
 	minBtcAddrLen = 26
@@ -31,6 +31,10 @@ func init() {
 	client = &http.Client{
 		Timeout: clientTimeout,
 	}
+}
+
+type ServerResponse struct {
+	Result interface{} `json:"result"`
 }
 
 // BTC is a cli bitcoin handler
@@ -55,10 +59,16 @@ func (b *BTC) GenerateKeyPair(c *cli.Context) error {
 		return err
 	}
 
-	keyPairResponse := &server.KeyPairResponse{}
+
+	keyPairResponse := &ServerResponse{
+		Result: &server.KeyPairResponse{},
+	}
+
+
 
 	json.NewDecoder(resp.Body).Decode(keyPairResponse)
-	log.Printf("Key %s created\n", keyPairResponse)
+	log.Printf("Public key %s created\n", keyPairResponse.Result.(*server.KeyPairResponse).Public)
+	log.Printf("Private key %X created\n", keyPairResponse.Result.(*server.KeyPairResponse).Private)
 	return nil
 }
 
@@ -66,6 +76,7 @@ func (b *BTC) GenerateKeyPair(c *cli.Context) error {
 func (b *BTC) GenerateAddress(c *cli.Context) error {
 	publicKey := c.Args().Get(1)
 
+	fmt.Println("public key from arguments: ", publicKey)
 	params := map[string]interface{}{
 		"key": publicKey,
 	}
@@ -89,11 +100,13 @@ func (b *BTC) GenerateAddress(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	
-	addressResponse := &server.AddressResponse{}
+
+	addressResponse := &ServerResponse{
+		Result: &server.AddressResponse{},
+	}
 	json.NewDecoder(resp.Body).Decode(addressResponse)
 
-	log.Printf("Address %s created\n", addressResponse)
+	log.Printf("Address %s created\n", addressResponse.Result.(*server.AddressResponse).Address)
 
 	return nil
 }
@@ -120,10 +133,12 @@ func (b *BTC) CheckBalance(c *cli.Context) error {
 		return err
 	}
 
-	balanceResponse := &btc.BalanceResponse{}
+	balanceResponse := &ServerResponse{
+		Result: &btc.BalanceResponse{},
+	}
 	json.NewDecoder(resp.Body).Decode(balanceResponse)
 
-	log.Printf("Check balance success %+v\n", balanceResponse)
+	log.Printf("Check balance success %+v\n", balanceResponse.Result.(*btc.BalanceResponse).Balance)
 	return nil
 }
 
@@ -142,9 +157,12 @@ func (b *BTC) CheckTransaction(c *cli.Context) error {
 		return err
 	}
 
-	txStatusResponse := &btc.TxStatus{}
+	txStatusResponse := &ServerResponse{
+		Result: &btc.TxStatus{},
+	}
+
 	json.NewDecoder(resp.Body).Decode(txStatusResponse)
 
-	log.Printf("Check balance success %+v\n", txStatusResponse)
+	log.Printf("Check balance success %+v\n", txStatusResponse.Result.(*btc.TxStatus))
 	return nil
 }
