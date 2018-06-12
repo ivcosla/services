@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/"
+	"github.com/skycoin/services/coin-api/internal/server"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 )
@@ -52,9 +52,11 @@ func (b *BTC) GenerateKeyPair(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
-	
-	json.NewDecoder(resp.Body).Decode()
-	log.Printf("Key %s created\n", resp)
+
+	keyPairResponse := &server.KeyPairResponse{}
+
+	json.NewDecoder(resp.Body).Decode(keyPairResponse)
+	log.Printf("Key %s created\n", keyPairResponse)
 	return nil
 }
 
@@ -85,8 +87,11 @@ func (b *BTC) GenerateAddress(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	
+	addressResponse := &server.AddressResponse{}
+	json.NewDecoder(resp.Body).Decode(addressResponse)
 
-	log.Printf("Address %s created\n", resp)
+	log.Printf("Address %s created\n", addressResponse)
 
 	return nil
 }
@@ -112,6 +117,9 @@ func (b *BTC) CheckBalance(c *cli.Context) error {
 	if err != nil {
 		return err
 	}
+
+	addressResponse := &server.AddressResponse{}
+	json.NewDecoder(resp.Body).Decode(addressResponse)
 
 	log.Printf("Check balance success %s\n", resp)
 	return nil
