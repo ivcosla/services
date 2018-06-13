@@ -44,7 +44,7 @@ func main() {
 		cfgData []byte
 		err     error
 	)
-
+	
 	// Read coin config from file or stdin
 	if *cfgPath != "" {
 		cfgData, err = ioutil.ReadFile(*cfgPath)

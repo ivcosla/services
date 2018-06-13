@@ -15,9 +15,7 @@ import (
 	"github.com/skycoin/skycoin/src/visor"
 )
 
-var (
-	logger = logging.MustGetLogger("main")
-)
+var logger = logging.MustGetLogger("main")
 
 func initLogger(cfg NodeConfig) (func(), error) {
 	format := "[skycoin.%{module}:%{level}] %{message}"
@@ -76,7 +74,7 @@ func initLogger(cfg NodeConfig) (func(), error) {
 func initDaemon(cfg NodeConfig, peers []string) (*daemon.Daemon, error) {
 	dc := makeDaemonConfg(cfg)
 
-	db, err := visor.OpenDB(dc.Visor.Config.DBPath)
+	db, err := visor.OpenDB(dc.Visor.Config.DBPath, false)
 	if err != nil {
 		logger.Error("Database failed to open: %v. Is another skycoin instance running?", err)
 	}
@@ -91,7 +89,10 @@ func initDaemon(cfg NodeConfig, peers []string) (*daemon.Daemon, error) {
 
 func initWebRPC(cfg NodeConfig, d *daemon.Daemon) (*webrpc.WebRPC, error) {
 	addr := fmt.Sprintf("%v:%v", cfg.RPCInterfaceAddr, cfg.RPCInterfacePort)
-	rpc, err := webrpc.New(addr, d.Gateway)
+
+	defaultWebrpcConfig := webrpc.Config{}
+
+	rpc, err := webrpc.New(addr, defaultWebrpcConfig, d.Gateway)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +131,7 @@ func initWebGUI(cfg NodeConfig, d *daemon.Daemon) (*gui.Server, string, error) {
 		server *gui.Server
 		err    error
 
-		guiCfg = gui.ServerConfig{
+		guiCfg = gui.Config{
 			StaticDir:   cfg.GUIDirectory,
 			DisableCSRF: cfg.DisableCSRF,
 		}
