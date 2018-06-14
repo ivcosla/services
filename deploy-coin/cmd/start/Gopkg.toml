@@ -33,6 +33,12 @@
   name = "github.com/skycoin/skycoin"
   version = "0.22.0"
 
+
 [prune]
   go-tests = true
   unused-packages = true
+
+   [[prune.project]]
+     name = "github.com/skycoin/skycoin"
+     unused-packages = false
+     non-go = false

@@ -159,7 +159,7 @@ func makeDefaultNodeConfig() NodeConfig {
 		// Data directory holds app data -- defaults to ~/.skycoin
 		DataDirectory: ".skycoin",
 		// Web GUI static resources
-		GUIDirectory: "./src/gui/static/",
+		GUIDirectory: "./vendor/github.com/skycoin/skycoin/src/gui/static/",
 		// Logging
 		ColorLog: true,
 		LogLevel: "DEBUG",
