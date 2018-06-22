@@ -18,25 +18,9 @@ import (
 var logger = logging.MustGetLogger("main")
 
 func initLogger(cfg NodeConfig) (func(), error) {
-	format := "[skycoin.%{module}:%{level}] %{message}"
-
-	modules := []string{
-		"main",
-		"daemon",
-		"coin",
-		"gui",
-		"file",
-		"visor",
-		"wallet",
-		"gnet",
-		"pex",
-		"webrpc",
-	}
-
-	logCfg := logging.DevLogConfig(modules)
-	logCfg.Format = format
-	logCfg.Colors = true
-	logCfg.Level = "debug"
+	
+	logger.EnableColors()
+	logger.SetLevel(logger.LevelFromString("debug"))
 
 	var logFD *os.File
 	if cfg.Logtofile {
@@ -57,7 +41,7 @@ func initLogger(cfg NodeConfig) (func(), error) {
 		logCfg.Output = io.MultiWriter(os.Stdout, logFD)
 	}
 
-	logCfg.InitLogger()
+	logger.InitLogger()
 
 	closeLogFD := func() {
 		logger.Info("closing log file")
