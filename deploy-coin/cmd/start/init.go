@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"time"
@@ -19,8 +18,13 @@ var logger = logging.MustGetLogger("main")
 
 func initLogger(cfg NodeConfig) (func(), error) {
 	
-	logger.EnableColors()
-	logger.SetLevel(logger.LevelFromString("debug"))
+	logging.EnableColors()
+
+	level, err := logging.LevelFromString("debug")
+	if err != nil{
+
+	logging.SetLevel(level)
+	}
 
 	var logFD *os.File
 	if cfg.Logtofile {
@@ -38,10 +42,12 @@ func initLogger(cfg NodeConfig) (func(), error) {
 			return nil, fmt.Errorf("failed to open log file, %s", err)
 		}
 
-		logCfg.Output = io.MultiWriter(os.Stdout, logFD)
+		logging.SetOutputTo(os.Stdout)
+		logging.SetOutputTo(logFD)
+
 	}
 
-	logger.InitLogger()
+	//logger.InitLogger()
 
 	closeLogFD := func() {
 		logger.Info("closing log file")
@@ -105,7 +111,10 @@ func initWebGUI(cfg NodeConfig, d *daemon.Daemon) (*gui.Server, string, error) {
 
 	// Setup address
 	fullAddr := fmt.Sprintf("%s://%s", scheme, host)
+	/* NOT USING FOR NOW
 	logger.Critical("Full address: %s", fullAddr)
+	*/
+	
 	if cfg.PrintWebInterfaceAddress {
 		fmt.Println(fullAddr)
 	}
