@@ -1,0 +1,30 @@
+{
+    "secret": {
+        "masterPrivateKey": "2d86da9849dac8fb1fcbb1f81bb0e9db6a87618bff9b8e5a536cfbbfc7062eb8",
+        "genesisSignature": "a2147e98fbfb758d554d23cae3e802b61ccc48e58e21b9659a2635f8f100b8ef35fbd6478fd400695e6361e9e470a24567077ec58f00b8ebd8c5bde4bd9731a700"
+    },
+    "public": {
+        "masterPublicKey": "02ba71b2807d05756d220f61a26bc40282307e907c51e7072a81169696dccd6398",
+        "genesisBlock": {
+            "address": "2XgjQ77ExPHmHFRbomSNgxhoij2NxJo1uMK",
+            "coins": 100,
+            "timestamp": 1529374561,
+            "bodyHash": "1d2688fa292cc921d19a204ef6293cf1d2858ef38ac7a5e5dd5445d15af5d638",
+            "headerHash": "406fc3a127bca18caa33631c4c9715820862c7efe14369d4448c0fbc6237db50"
+        },
+        "genesisWallet": {
+            "seed": "response real version trim start gentle weird valve combine submit torch raven",
+            "addresses": 100,
+            "coinsPerAddress": 1
+        },
+        "coinCode": "SKY",
+        "port": 20100,
+        "rpcPort": 20200,
+        "guiPort": 20300,
+        "trustedPeers": [
+            "127.0.0.1:20000",
+            "127.0.0.1:20001",
+            "127.0.0.1:20002"
+        ]
+    }
+}

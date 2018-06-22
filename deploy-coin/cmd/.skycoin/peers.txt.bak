@@ -1,0 +1,23 @@
+{
+    "127.0.0.1:20000": {
+        "Addr": "127.0.0.1:20000",
+        "LastSeen": 1529374326,
+        "Private": false,
+        "Trusted": true,
+        "HasIncomingPort": false
+    },
+    "127.0.0.1:20001": {
+        "Addr": "127.0.0.1:20001",
+        "LastSeen": 1529374326,
+        "Private": false,
+        "Trusted": true,
+        "HasIncomingPort": false
+    },
+    "127.0.0.1:20002": {
+        "Addr": "127.0.0.1:20002",
+        "LastSeen": 1529374326,
+        "Private": false,
+        "Trusted": true,
+        "HasIncomingPort": false
+    }
+}
