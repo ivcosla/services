@@ -31,7 +31,7 @@
 
 [[constraint]]
   name = "github.com/skycoin/skycoin"
-  version = "0.22.0"
+  version = "0.23.0"
 
 
 [prune]
@@ -39,6 +39,6 @@
   unused-packages = true
 
    [[prune.project]]
-     name = "github.com/skycoin/skycoin"
-     unused-packages = false
-     non-go = false
+       name = "github.com/skycoin/skycoin"
+       unused-packages = false
+       non-go = false

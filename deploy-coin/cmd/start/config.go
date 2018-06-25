@@ -28,7 +28,7 @@ type NodeConfig struct {
 	// Disables networking altogether
 	DisableNetworking bool
 	// Disables wallet API
-	DisableWalletApi bool
+	EnableWalletApi bool
 	// Disable CSRF check in the wallet api
 	DisableCSRF bool
 
@@ -122,7 +122,7 @@ func makeDefaultNodeConfig() NodeConfig {
 		// Disables networking altogether
 		DisableNetworking: false,
 		// Disable wallet API
-		DisableWalletApi: false,
+		EnableWalletApi: true,
 		// Disable CSRF check in the wallet api
 		DisableCSRF: false,
 		// Only run on localhost and only connect to others on localhost
@@ -263,7 +263,7 @@ func makeDaemonConfg(nc NodeConfig) daemon.Config {
 
 	// Wallet
 	dc.Visor.Config.WalletDirectory = nc.WalletDirectory
-	dc.Gateway.DisableWalletAPI = nc.DisableWalletApi
+	dc.Gateway.EnableWalletAPI = nc.EnableWalletApi
 
 	dc.Visor.Config.DBPath = nc.DBPath
 

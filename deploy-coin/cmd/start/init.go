@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"time"
@@ -18,25 +17,14 @@ import (
 var logger = logging.MustGetLogger("main")
 
 func initLogger(cfg NodeConfig) (func(), error) {
-	format := "[skycoin.%{module}:%{level}] %{message}"
+	
+	logging.EnableColors()
 
-	modules := []string{
-		"main",
-		"daemon",
-		"coin",
-		"gui",
-		"file",
-		"visor",
-		"wallet",
-		"gnet",
-		"pex",
-		"webrpc",
+	level, err := logging.LevelFromString("debug")
+	if err != nil{
+
+	logging.SetLevel(level)
 	}
-
-	logCfg := logging.DevLogConfig(modules)
-	logCfg.Format = format
-	logCfg.Colors = true
-	logCfg.Level = "debug"
 
 	var logFD *os.File
 	if cfg.Logtofile {
@@ -54,10 +42,12 @@ func initLogger(cfg NodeConfig) (func(), error) {
 			return nil, fmt.Errorf("failed to open log file, %s", err)
 		}
 
-		logCfg.Output = io.MultiWriter(os.Stdout, logFD)
+		logging.SetOutputTo(os.Stdout)
+		logging.SetOutputTo(logFD)
+
 	}
 
-	logCfg.InitLogger()
+	//logger.InitLogger()
 
 	closeLogFD := func() {
 		logger.Info("closing log file")
@@ -121,7 +111,10 @@ func initWebGUI(cfg NodeConfig, d *daemon.Daemon) (*gui.Server, string, error) {
 
 	// Setup address
 	fullAddr := fmt.Sprintf("%s://%s", scheme, host)
+	/* NOT USING FOR NOW
 	logger.Critical("Full address: %s", fullAddr)
+	*/
+	
 	if cfg.PrintWebInterfaceAddress {
 		fmt.Println(fullAddr)
 	}

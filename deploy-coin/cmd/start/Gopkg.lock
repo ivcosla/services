@@ -14,16 +14,34 @@
   version = "v2.0.0"
 
 [[projects]]
-  name = "github.com/op/go-logging"
+  name = "github.com/mattn/go-colorable"
   packages = ["."]
-  revision = "b2cb9fa56473e98db8caba80237377e83fe44db5"
-  version = "v1"
+  revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
+  version = "v0.0.9"
+
+[[projects]]
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/mgutz/ansi"
+  packages = ["."]
+  revision = "9520e82c474b0a04dd04f8a40959027271bab992"
 
 [[projects]]
   name = "github.com/shopspring/decimal"
   packages = ["."]
   revision = "69b3a8ad1f5f2c8bd855cb6506d18593064a346b"
   version = "1.0.1"
+
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
 
 [[projects]]
   branch = "master"
@@ -37,10 +55,15 @@
     "src/api/webrpc",
     "src/cipher",
     "src/cipher/base58",
-    "src/cipher/chacha20",
+    "src/cipher/chacha20poly1305",
+    "src/cipher/chacha20poly1305/internal/chacha20",
     "src/cipher/encoder",
+    "src/cipher/encrypt",
     "src/cipher/go-bip39",
+    "src/cipher/pbkdf2",
+    "src/cipher/poly1305",
     "src/cipher/ripemd160",
+    "src/cipher/scrypt",
     "src/cipher/secp256k1-go",
     "src/cipher/secp256k1-go/secp256k1-go2",
     "src/coin",
@@ -65,8 +88,8 @@
     "src/visor/historydb",
     "src/wallet"
   ]
-  revision = "84098d9ef5cdfa86d325509cf200dd7e45b4a1b4"
-  version = "v0.22.0"
+  revision = "452491da01d7ce66c4ed6c01e19f986e1dda34ea"
+  version = "v0.23.0"
 
 [[projects]]
   name = "github.com/toqueteos/webbrowser"
@@ -77,7 +100,7 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["pbkdf2"]
+  packages = ["ssh/terminal"]
   revision = "8ac0e0d97ce45cd83d1d7243c060cb8461dda5e9"
 
 [[projects]]
@@ -89,12 +112,15 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
+  packages = [
+    "unix",
+    "windows"
+  ]
   revision = "bff228c7b664c5fce602223a05fb708fd8654986"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "25a5867ac99afe72b7817541c51a78b115d5e7cca2132861780407e1ee823bcd"
+  inputs-digest = "ba55698a0e1d7b30bccd64cb8cb7e7771aadf34e5158db9829600b590f9a9a57"
   solver-name = "gps-cdcl"
   solver-version = 1
