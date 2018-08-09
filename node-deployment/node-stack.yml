@@ -41,8 +41,6 @@ services:
 configs:
   autoupdater-config:
     file: ./configuration.yml
-  tagger-script:
-    file: ./tagger/tagger.sh
 
 volumes:
   skywire-data:
