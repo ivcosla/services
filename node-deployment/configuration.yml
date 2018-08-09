@@ -13,7 +13,7 @@ services:
     official_name: "skywire-manager"
     local_name: "nodes_skywire-manager"
     repository: "/skycoin/skywire"
-    check_tag: "latest"
+    check_tag: ""
     active_update_checker: "dockerhub_fetcher"
     updater: "swarm"
 
@@ -21,6 +21,6 @@ services:
     official_name: "skywire-node"
     local_name: "nodes_skywire-node"
     repository: "/skycoin/skywire"
-    check_tag: "latest"
+    check_tag: ""
     active_update_checker: "dockerhub_fetcher"
     updater: "swarm"

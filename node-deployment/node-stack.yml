@@ -8,14 +8,14 @@ services:
   skywire-manager:
     networks:
       - skywire
-    image: skycoin/skywire
+    image: skycoin/skywire:latest
     ports:
       - 8000:8000
 
   skywire-node:
     networks:
       - skywire
-    image: skycoin/skywire
+    image: skycoin/skywire:latest
    # setup persistence, only makes sense for a global service
     volumes:
       - skywire-data:/root/.skywire
@@ -41,6 +41,8 @@ services:
 configs:
   autoupdater-config:
     file: ./configuration.yml
+  tagger-script:
+    file: ./tagger/tagger.sh
 
 volumes:
   skywire-data:
