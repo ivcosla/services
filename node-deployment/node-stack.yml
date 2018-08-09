@@ -1,0 +1,46 @@
+version: "3.6"
+
+networks:
+  skywire:
+    driver: overlay
+
+services:
+  skywire-manager:
+    networks:
+      - skywire
+    image: skycoin/skywire
+    ports:
+      - 8000:8000
+
+  skywire-node:
+    networks:
+      - skywire
+    image: skycoin/skywire
+   # setup persistence, only makes sense for a global service
+    volumes:
+      - skywire-data:/root/.skywire
+    command: node -connect-manager -manager-address skywire-manager:5998 -manager-web skywire-manager:8000 -address :5000 -web-port :6001 -discovery-address discovery.skycoin.net:5999-034b1cd4ebad163e457fb805b3ba43779958bba49f2c5e1e8b062482904bacdb68
+    ports:
+      - 5000:5000
+      - 6001:6001
+
+  # need to run on manager nodes to be able to update other services
+  autoupdater:
+    image: ivcosla/autoupdater:0.0.1
+    configs:
+      - source: autoupdater-config
+        target: /autoupdater/configuration.yml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+configs:
+  autoupdater-config:
+    file: ./configuration.yml
+
+volumes:
+  skywire-data:
