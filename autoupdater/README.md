@@ -9,7 +9,7 @@ available, update them.
 
 Autoupdater allows to configure:
 
-    1. How to look for updates: Currently support to perform periodical checks on github or dockerhub (we call this active update checkers), or to subscribe to a publisher that will send autoupdater update notifications (we call this passive update checkers), the only publisher supported so far is [nats](https://nats.io/).
+    1. How to look for updates: Currently support to perform periodical checks on github or dockerhub (we call this active update checkers), there is also a naive active checker that will just call the updater every interval, or to subscribe to a publisher that will send autoupdater update notifications (we call this passive update checkers), the only publisher supported so far is [nats](https://nats.io/).
     
     2. How to update services: We call this Updaters, and currently there are supported docker swarm and custom scripts.
     
@@ -85,6 +85,16 @@ The configuration file has 3 sections:
         check_tag: name of the tag to check for updates, this is used to check for updates on github or dockerhub. Don't needed for passive checkers. Example: "latest"
         updater: previously defined updater configuration name. Example: "custom"
 
+
+# Running on Docker
+Firstable, you can pull the image: `docker pull skycoin/autoupdater` or you can build it yourself: `docker build . [your-image-name]`.
+
+By default, the docker image doesn't provides any configuration, so you will have to place one inside using the tag `-v [your-configuration]:/autoupdater/configuration.yml`, autoupdater is looking for that file by default, if you use a different one you should tell autoupdater with `-config [path-to-your-config]` flag.
+
+If you want to use the Docker image to update other services running under docker swarm, or maybe even under the docker daemon, you will also need to mount the docker daemon socket inside, again using the tag `-v /var/run/docker.sock:/var/run/docker.sock`.
+
+An example of command to run the docker image would be:
+`docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd)/configuration.yml:/autoupdater/configuration.yml --rm -it skycoin/autoupdater:0.0.1`.
 
 ### Task List first release
 - [x] Fetch updates passively
