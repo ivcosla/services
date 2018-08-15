@@ -18,35 +18,13 @@ services:
         constraints:
           - node.role == manager
 
-#  skywire-node:
-#    networks:
-#      - skywire
-#    image: skycoin/skywire
-#   # setup persistence, only makes sense for a global service
-#    #volumes:
-#     # - skywire-data:/root/.skywire
-#    command: node -connect-manager -manager-address skywire-manager:5998 -manager-web skywire-manager:8000 -address :5000 -web-port :6001 -discovery-address discovery.skycoin.net:5999-034b1cd4ebad163e457fb805b3ba43779958bba49f2c5e1e8b062482904bacdb68
-#    ports:
-#      - target: 5000
-#        published: 5000
-#        mode: host
-#      - target: 6001
-#        published: 6001
-#        mode: host
-#    deploy:
-#     # mode: global
-#     replicas: 1
-#     placement:
-#      constraints:
-#        - node.labels.node1 == true
-
-  skywire-node2:
+  skywire-node:
     networks:
       - skywire
-    image: skycoin/skywire:latest
+    image: skycoin/skywire
    # setup persistence, only makes sense for a global service
-    #volumes:
-     # - skywire-data:/root/.skywire
+    volumes:
+      - skywire-data:/root/.skywire
     command: node -connect-manager -manager-address skywire-manager:5998 -manager-web skywire-manager:8000 -address :5000 -web-port :6001 -discovery-address discovery.skycoin.net:5999-034b1cd4ebad163e457fb805b3ba43779958bba49f2c5e1e8b062482904bacdb68
     ports:
       - target: 5000
@@ -56,11 +34,29 @@ services:
         published: 6001
         mode: host
     deploy:
-     # mode: global
-     replicas: 1
-     placement:
-      constraints:
-        - node.labels.node2 == true
+     mode: global
+
+#  skywire-node:
+#    networks:
+#    - skywire
+#    image: skycoin/skywire
+#    # setup persistence, only makes sense for a global service
+#    volumes:
+#    - skywire-data:/root/.skywire
+#    command: node -connect-manager -manager-address skywire-manager:5998 -manager-web skywire-manager:8000 -address :5000 -web-port :6001 -discovery-address discovery.skycoin.net:5999-034b1cd4ebad163e457fb805b3ba43779958bba49f2c5e1e8b062482904bacdb68
+#    ports:
+#    - target: 5000
+#      published: 5000
+#      mode: host
+#    - target: 6001
+#      published: 6001
+#      mode: host
+#    deploy:
+#      mode: global
+#      placement:
+#        constraints:
+#        - node.labels.node1 == true
+
 
   # need to run on manager nodes to be able to update other services
   autoupdater:
