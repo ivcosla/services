@@ -1,65 +1,67 @@
 # Prerequisites
 
-    1. Docker on each skyminer node.
-    2. A [Docker Swarm](https://docs.docker.com/get-started/part4/#understanding-swarm-clusters) Cluster.
+- Docker on each skyminer node.
+- A [Docker Swarm][1] Cluster.
+
+[1]: https://docs.docker.com/get-started/part4/#understanding-swarm-clusters
 
 ## Install Docker
 
 For every skyminer node you need to ssh into:
 
-    `Instructions for ssh`
+    Instructions for ssh
 
 Then install docker on it, if running armbian:
 
-    ``` bash
-    # update and install
-    sudo apt-get update
+``` bash
+# update and install
+sudo apt-get update
 
-    sudo apt-get install \
-        apt-transport-https \
-        ca-certificates \
-        curl \
-        software-properties-common
-
-
-    # add docker official GPG key
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-
-    # verify
-    sudo apt-key fingerprint 0EBFCD88
-
-    # it should return:
-    pub   4096R/0EBFCD88 2017-02-22
-          Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
-    uid                  Docker Release (CE deb) <docker@docker.com>
-    sub   4096R/F273FCD8 2017-02-22
-
-    # add the repository
-    sudo add-apt-repository \
-       "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
-       $(lsb_release -cs) \
-       stable"
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
 
 
-    # update and install docker-ce
-    sudo apt-get update
-    sudo apt-get install docker-ce
-    ```
+# add docker official GPG key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-    Now you may want to add your user to docker group so you can run docker without sudo and run it on startup
+# verify
+sudo apt-key fingerprint 0EBFCD88
 
-    ```bash
-	# Create docker group
-	sudo groupadd docker
+# it should return:
+pub   4096R/0EBFCD88 2017-02-22
+      Key fingerprint = 9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid                  Docker Release (CE deb) <docker@docker.com>
+sub   4096R/F273FCD8 2017-02-22
 
-	# Add your user to the docker group
-	sudo usermod -aG docker $USER
-	# Now you should log out and in again for changes to take effect
+# add the repository
+sudo add-apt-repository \
+   "deb [arch=armhf] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
 
-	# Make it available on startup
-	sudo usermod -aG docker $USER	
-	sudo systemctl disable docker
-    ```
+
+# update and install docker-ce
+sudo apt-get update
+sudo apt-get install docker-ce
+```
+
+Now you may want to add your user to docker group so you can run docker without sudo and run it on startup
+
+```bash
+# Create docker group
+sudo groupadd docker
+
+# Add your user to the docker group
+sudo usermod -aG docker $USER
+# Now you should log out and in again for changes to take effect
+
+# Make it available on startup
+sudo usermod -aG docker $USER
+sudo systemctl disable docker
+```
 
 ## Install swarm
 
@@ -83,16 +85,16 @@ miner node to join the cluster as a worker.
 
 First, on the node you want to be the master:
 
-    `docker swarm init`
+    docker swarm init
 
 It will ask you which interface ip to advertise, choose the one you want. It will then prompt the command you must
 run on the other nodes for them to join the cluster as workers:
 
-    ```bash
-      docker swarm join \
-      --token <token> \
-      <my ip>:<port>
-    ```
+```bash
+  docker swarm join \
+  --token <token> \
+  <my ip>:<port>
+```
 
 Now log into every other miner node and join the cluster as a worker using the previous command.
 
@@ -101,7 +103,7 @@ Now log into every other miner node and join the cluster as a worker using the p
 When every node has joined the cluster log into the master node and clone this repository somewhere. Now
 you will launch the swarm stack from it. On the repository root run the following command:
 
-    `docker stack deploy --compose-file node-stack.yml nodes`
+    docker stack deploy --compose-file node-stack.yml nodes
 
 Now you have commanded docker to deploy a stack of services called "nodes", but you can use another name
 if you please.
@@ -109,16 +111,16 @@ if you please.
 Now you can check the status of the services (bear in mind that the first time you deploy the stack every docker
 daemon has to pull the docker image that is mean to run, so it may take a while for them to be available):
 
-    `docker stack services nodes`
+    docker stack services nodes
 
 You can also look at a service logs by calling:
 
-    `docker service logs <name of the service>`
+    docker service logs <name of the service>
 
 Or look where has been every replica of a service deployed:
 
-    `docker service ps <name of the service>`
+    docker service ps <name of the service>
 
 Finally if you want to remove every service deployed by the stack you can call:
 
-    `docker stack rm nodes`
+    docker stack rm nodes
